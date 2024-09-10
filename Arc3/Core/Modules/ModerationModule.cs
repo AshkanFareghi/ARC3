@@ -180,7 +180,7 @@ public class ModerationModule : ArcModule
     
     // Create your jail and initialize it.
     var jail = new Jail();
-    await jail.InitAsync(_clientInstance, Context.Guild, user, DbService);
+    await jail.InitAsync(_clientInstance, Context.Guild, user, DbService, Context.User);
     
     // Send feedback.
     await ctx.FollowupAsync($"{user.Mention} was jailed!", ephemeral: true);
