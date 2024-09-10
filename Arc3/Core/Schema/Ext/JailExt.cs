@@ -22,7 +22,7 @@ public static class JailExt {
 
   
   public static async Task<bool> InitAsync(this Jail self, DiscordSocketClient clientInstance, SocketGuild guild,
-    SocketUser user, DbService dbService) 
+    SocketUser user, DbService dbService, SocketUser author) 
   {
 
     self.UserSnowflake = ((long)user.Id);
@@ -42,6 +42,8 @@ public static class JailExt {
     var jailChannelSnowflake = ulong.Parse(guildConfig["jailchannel"]);
     var jailCategory = guild.GetCategoryChannel(jailChannelSnowflake);
 
+    var guildAuthor = guild.GetUser(author.Id);
+
     if (jailCategory.GetChannelType() != ChannelType.Category)
       return false;
 
@@ -53,11 +55,15 @@ public static class JailExt {
         x.ChannelType = ChannelType.Text;
         x.CategoryId = jailCategory.Id;
       }
+      
     );
+    
     await jailChannel.AddPermissionOverwriteAsync(user, perms);
     
-    await jailChannel.SendMessageAsync($"{user.Mention} you have been jailed!");
-
+    var msg = await jailChannel.SendMessageAsync($"{user.Mention} you have been jailed!");
+    var thread = await jailChannel.CreateThreadAsync("Jail-Notes", ThreadType.PrivateThread, ThreadArchiveDuration.OneDay);
+    var threadPerms = new OverwritePermissions(viewChannel: PermValue.Allow, sendMessages: PermValue.Allow, useApplicationCommands: PermValue.Allow);
+    await thread.AddUserAsync(guildAuthor);
     try {
       var jailedRoleSnowflake = ulong.Parse(guildConfig["jailedrole"]);
       var jailRole = guild.GetRole(jailedRoleSnowflake);
