@@ -55,7 +55,11 @@ public class ModMailService : ArcService
             
             // Handle the mail transcript
             await HandleMailChannelEditTranscript(arg2);
-            await HandleMailChannelMessage(arg2, edit: true);
+            
+            if (!arg2.Content.StartsWith("#"))
+                await HandleMailChannelMessage(arg2, edit: true);
+
+            return;
 
         }
         
@@ -324,6 +328,9 @@ public class ModMailService : ArcService
 
     private async Task ClientInstanceOnMessageReceived(SocketMessage arg)
     {
+        if (arg.EditedTimestamp != null)
+            return;
+        
         // Quit if the message is from a bot
         if (arg.Author.IsBot)
             return;
