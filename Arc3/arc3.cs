@@ -6,10 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using System.Reflection;
 using Arc3.Core.Services;
-using arc3.Core.Services;
-using System.Diagnostics;
 using Arc3.Core.Schema;
-using System.ComponentModel;
 
 using MongoDB.Bson;
 
@@ -17,7 +14,7 @@ namespace Arc3;
 
 internal class Arc3
 {
-  public static string ArcVersion = "3.7.1";
+  public static string ArcVersion = ThisAssembly.Git.Tag;
     
   private DiscordSocketClient? _client;
     
@@ -65,7 +62,7 @@ internal class Arc3
     var modmailService = _serviceProvider.GetRequiredService<ModMailService>();
     var jailService = _serviceProvider.GetRequiredService<JailService>();
     var karaokeService = _serviceProvider.GetRequiredService<KaraokeService>();
-      
+
     _client.InteractionCreated += async interaction => 
     {
       var ctx = new SocketInteractionContext(_client, interaction);
