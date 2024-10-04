@@ -9,7 +9,7 @@ COPY ./arc3-dash/ .
 
 RUN npm run build
 
-FROM nginx:1.21.0-alpine
+FROM nginx:1.27.2-alpine
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
