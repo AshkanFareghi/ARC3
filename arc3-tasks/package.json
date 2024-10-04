@@ -10,8 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.16.2",
-    "mongodb": "^6.6.2",
+    "mongodb": "^6.9.0",
     "node-tar": "^1.0.0",
-    "tar": "^7.1.0"
+    "tar": "^7.4.3"
   }
 }
